@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-efs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-mongo
+  template:
+    metadata:
+      labels:
+        app: my-mongo
+    spec:
+      containers:
+        - name: mongo-container
+          image: shahdabdulaziz/pizza-app-database2
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db #inside container
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m" 
+      volumes:
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: efs-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-efs
+  labels:
+    app: my-mongo
+spec:
+  selector:
+    app: my-mongo
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  type: LoadBalancer 
