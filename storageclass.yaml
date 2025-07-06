@@ -5,10 +5,10 @@ metadata:
 provisioner: efs.csi.aws.com
 parameters:
   provisioningMode: efs-ap
-  fileSystemId: fs-046727475aa930d6f #add filesystem id
-  directoryPerms: "700" #default permissions
+  fileSystemId: fs-046727475aa930d6f 
+  directoryPerms: "700" 
   gidRangeStart: "1000" 
   gidRangeEnd: "2000"
-  basePath: "/" # default
-reclaimPolicy: Retain
+  basePath: "/users" 
+reclaimPolicy: Delete
 volumeBindingMode: Immediate
